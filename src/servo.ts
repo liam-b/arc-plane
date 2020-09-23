@@ -8,7 +8,6 @@ export default class extends pwm.Device {
 
   constructor(pwmHat: pwm.Hat, channel: pwm.Channel) {
     super(pwmHat, channel)
-    this.recenter()
   }
 
   setPosition(newPosition: number) {
