@@ -32,32 +32,32 @@ export class Hat {
   constructor(private frequency: number = DEFAULT_FREQUENCY, address: number = DEFAULT_ADDRESS) {
     this.device = new i2c.Device(address)
 
-    this.device.write(MODE2, OUTDRV)
-    this.device.write(MODE1, ALLCALL)
-    let mode1 = this.device.read(MODE1)
+    this.device.writeByte(MODE2, OUTDRV)
+    this.device.writeByte(MODE1, ALLCALL)
+    let mode1 = this.device.readByte(MODE1)
     mode1 = mode1 & (~mode1)
-    this.device.write(MODE1, mode1)
+    this.device.writeByte(MODE1, mode1)
 
     this.setupMode()
   }
 
   private setupMode() {
-    let oldmode = this.device.read(MODE1)
+    let oldmode = this.device.readByte(MODE1)
     let newmode = (oldmode & 0x7f) | 0x10
 
-    this.device.write(MODE1, newmode)
-    this.device.write(PRESCALE, 0x7a)
-    this.device.write(MODE1, oldmode)
-    this.device.write(MODE1, oldmode | 0x80)
+    this.device.writeByte(MODE1, newmode)
+    this.device.writeByte(PRESCALE, 0x7a)
+    this.device.writeByte(MODE1, oldmode)
+    this.device.writeByte(MODE1, oldmode | 0x80)
   }
 
   setChannelDutyCycle(channel: Channel, dutyCycle: number) {    
     let scaledDutyCycle = Math.max(Math.min(dutyCycle * 40.96, 4095), 0)
 
-    this.device.write(OFF_L + 4 * channel, scaledDutyCycle & 0xff)
-    this.device.write(OFF_H + 4 * channel, scaledDutyCycle >> 8)
-    this.device.write(ON_L + 4 * channel, 0 & 0xff)
-    this.device.write(ON_H + 4 * channel, 0 >> 8)
+    this.device.writeByte(OFF_L + 4 * channel, scaledDutyCycle & 0xff)
+    this.device.writeByte(OFF_H + 4 * channel, scaledDutyCycle >> 8)
+    this.device.writeByte(ON_L + 4 * channel, 0 & 0xff)
+    this.device.writeByte(ON_H + 4 * channel, 0 >> 8)
   }
 }
 

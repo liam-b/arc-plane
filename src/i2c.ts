@@ -1,4 +1,4 @@
-import i2c from "i2c-bus"
+import i2c from 'i2c-bus'
 
 const bus = i2c.openSync(1)
 
@@ -9,11 +9,19 @@ export class Device {
     this.address = address
   }
 
-  write(register: number, data: number) {
+  writeByte(register: number, data: number) {
     bus.writeByteSync(this.address, register, data)
   }
 
-  read(register: number): number {
+  writeWord(register: number, data: number) {
+    bus.writeWordSync(this.address, register, data)
+  }
+
+  readByte(register: number): number {
     return bus.readByteSync(this.address, register)
+  }
+
+  readWord(register: number): number {
+    return bus.readWordSync(this.address, register)
   }
 }

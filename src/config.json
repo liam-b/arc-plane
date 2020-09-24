@@ -1,0 +1,28 @@
+{
+  "controlSurfaces": {
+    "leftAileron": {
+      "minPosition": -0.55,
+      "centerPosition": -0.05,
+      "maxPosition": 0.35,
+      "reversed": false
+    },
+    "rightAileron": {
+      "minPosition": -0.4,
+      "centerPosition": 0,
+      "maxPosition": 0.52,
+      "reversed": true
+    },
+    "elevator": {
+      "minPosition": -1,
+      "centerPosition": -0.1,
+      "maxPosition": 0.9,
+      "reversed": false
+    },
+    "rudder": {
+      "minPosition": -0.93,
+      "centerPosition": 0.07,
+      "maxPosition": 1,
+      "reversed": false
+    }
+  }
+}
