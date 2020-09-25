@@ -12,20 +12,22 @@ const elevator = new ControlSurface(pwmHat, 8, config.controlSurfaces.elevator)
 const rudder = new ControlSurface(pwmHat, 9, config.controlSurfaces.rudder)
 const powerModule = new PowerModule()
 
+// import './radio'
 
 
-var t = 0
-setInterval(() => {
-  // ads.measure(0).then((res) => {
-  //   t = res
-  //   ads.measure(1).then((res) => {
-  //     console.log('A0:', '#'.repeat((t/65536) * 20).padStart(20, ' '), 'A1:', '#'.repeat((res/65536) * 20).padStart(20, ' '))
-  //   })
-  // })
-  powerModule.readCurrent().then((res) => {
-    console.log('current:', res)
-  })
-}, 50)
+
+// var t = 0
+// setInterval(() => {
+//   // ads.measure(0).then((res) => {
+//   //   t = res
+//   //   ads.measure(1).then((res) => {
+//   //     console.log('A0:', '#'.repeat((t/65536) * 20).padStart(20, ' '), 'A1:', '#'.repeat((res/65536) * 20).padStart(20, ' '))
+//   //   })
+//   // })
+//   powerModule.readCurrent().then((res) => {
+//     console.log('current:', res)
+//   })
+// }, 50)
 
 // ads.measure(1, '2/3').then((res) => {
 //   console.log('A1 at 2/3:', res)

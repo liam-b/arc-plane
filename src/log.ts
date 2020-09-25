@@ -16,7 +16,7 @@ export default {
   },
   
   info(...message: any[]) {
-    process.stdout.write(COLOR.blue)
+    process.stdout.write(COLOR.cyan)
     console.log(...message)
   },
   

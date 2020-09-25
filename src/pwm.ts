@@ -26,6 +26,8 @@ const ALLCALL = 0x01
 const INVRT = 0x10
 const OUTDRV = 0x04
 
+export type Channel = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15
+
 export class Hat {
   private readonly device: i2c.Device
 
@@ -74,5 +76,3 @@ export class Device {
     this.hat.setChannelDutyCycle(this.channel, dutyCycle)
   }
 }
-
-export type Channel = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15
