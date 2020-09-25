@@ -1,20 +1,29 @@
-interface Packet {
-  time: number,
-  type: string,
-  data: { [key: string]: any }
+export abstract class Packet {
+  time: number = Date.now()
+  abstract type: string
+  abstract data: { [key: string]: any }
+
+  static serialize(packet: Packet): string {
+    return JSON.stringify(packet)
+  }
+
+  static deserialize(data: string): Packet {
+    return JSON.parse(data) as Packet
+  }
 }
 
-interface PingPacket extends Packet {
-  type: "ping",
+export class PingPacket extends Packet {
+  type = "ping"
+  data = {}
 }
 
-interface ControlPacket extends Packet {
-  type: "control",
-  data: {
-    throttle: number,
-    roll: number
-    pitch: number
-    yaw: number
-    armed: boolean
+export class ControlPacket extends Packet {
+  type = "control"
+  data = {
+    throttle: 0,
+    roll: 0,
+    pitch: 0,
+    yaw: 0,
+    armed: true
   }
 }
