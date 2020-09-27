@@ -42,7 +42,8 @@ export class DS4Controller extends Controller {
 
   private scale(input: number, inverted?: boolean): number {
     let output = input / 255
-    return (inverted) ? -output : output
+    // return (inverted) ? -output : output
+    return Math.floor(((inverted) ? -output : output) * 100)
   }
 }
 

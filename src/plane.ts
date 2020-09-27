@@ -16,9 +16,18 @@ const powerModule = new PowerModule()
 const radio = new Radio()
 
 
-radio.onData((data) => {
+radio.onData((packet) => {
+  
+  if (packet.type == 'control') {
+    const controlPacket = packet as ControlPacket
+    radio.getMetrics()
+
+    leftAileron.setPosition(controlPacket.data.roll / 100)
+    rightAileron.setPosition(-controlPacket.data.roll / 100)
+    elevator.setPosition(controlPacket.data.pitch / 100)
+    rudder.setPosition(controlPacket.data.yaw / 100)
+  } 
   // console.log(data)
-  radio.getMetrics()
   // console.log(Date.now() - data.time)
 })
 
