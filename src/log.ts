@@ -13,20 +13,24 @@ export default {
   log(...message: any[]) {
     process.stdout.write(COLOR.white)
     console.log(...message)
+    process.stdout.write(COLOR.white)
   },
   
   info(...message: any[]) {
     process.stdout.write(COLOR.cyan)
     console.log(...message)
+    process.stdout.write(COLOR.white)
   },
   
   warn(...message: any[]) {
     process.stdout.write(COLOR.yellow)
     console.log(...message)
+    process.stdout.write(COLOR.white)
   },
   
   err(...message: any[]) {
     process.stdout.write(COLOR.red)
     console.log(...message)
+    process.stdout.write(COLOR.white)
   }
 }
