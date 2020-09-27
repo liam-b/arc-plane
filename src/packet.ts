@@ -1,3 +1,5 @@
+import { ControlData } from './controller'
+
 export abstract class Packet {
   time: number = Date.now()
   abstract type: string
@@ -17,17 +19,14 @@ export abstract class Packet {
 }
 
 export class PingPacket extends Packet {
-  type = "ping"
+  type = 'ping'
   data = {}
 }
 
 export class ControlPacket extends Packet {
-  type = "control"
-  data = {
-    throttle: 0,
-    roll: 0,
-    pitch: 0,
-    yaw: 0,
-    armed: true
+  type = 'control'
+
+  constructor(public data: ControlData) {
+    super()
   }
 }

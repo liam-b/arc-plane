@@ -1,5 +1,7 @@
+import { Controller } from './controller'
 import { Packet, PingPacket, ControlPacket } from './packet'
 import Radio from './radio'
+import { DS4Controller } from './controller'
 
 const radio = new Radio()
 
@@ -8,6 +10,9 @@ const radio = new Radio()
 // console.log(Packet.deserialize(Packet.serialize(packet)))
 // radio.send(packet)
 
-setInterval(() => {
-  radio.send(new ControlPacket())
-}, 200)
+const controller = new DS4Controller()
+
+setInterval(async () => {
+  // radio.send(new ControlPacket(await controller.getControlData()))
+  console.log((await controller.getControlData()).pitch)
+}, 100)

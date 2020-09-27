@@ -2,7 +2,7 @@ import { Packet } from './packet'
 import SerialPort from 'serialport'
 import logger from './log'
 
-const DEVICE_PATH = '/dev/serial0'
+const DEVICE_PATH = '/dev/tty.SLAB_USBtoUART'
 const BAUD_RATE = 57600
 
 const METRIC_HISTORY_LENGTH = 100
