@@ -3,6 +3,8 @@ import { ControlSurface } from './controlSurface'
 import * as pwm from './pwm'
 import Esc from './esc'
 import PowerModule from './powerModule'
+import { Packet, PingPacket, ControlPacket } from './packet'
+import Radio from './radio'
 
 const pwmHat = new pwm.Hat()
 const esc = new Esc(pwmHat, 0)
@@ -11,6 +13,16 @@ const rightAileron = new ControlSurface(pwmHat, 5, config.controlSurfaces.rightA
 const elevator = new ControlSurface(pwmHat, 8, config.controlSurfaces.elevator)
 const rudder = new ControlSurface(pwmHat, 9, config.controlSurfaces.rudder)
 const powerModule = new PowerModule()
+const radio = new Radio()
+
+
+radio.onData((data) => {
+  // console.log(data)
+  radio.getMetrics()
+  // console.log(Date.now() - data.time)
+})
+
+
 
 // import './radio'
 

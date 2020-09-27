@@ -7,8 +7,12 @@ export abstract class Packet {
     return JSON.stringify(packet)
   }
 
-  static deserialize(data: string): Packet {
-    return JSON.parse(data) as Packet
+  static deserialize(data: string): Packet | null {
+    try {
+      return JSON.parse(data) as Packet
+    } catch (_) {
+      return null
+    }
   }
 }
 
