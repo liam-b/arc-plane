@@ -3,8 +3,8 @@ import { ControlSurface } from './controlSurface'
 import * as pwm from './pwm'
 import Esc from './esc'
 import PowerModule from './powerModule'
-import { Packet, PingPacket, ControlPacket } from './packet'
-import Radio from './radio'
+import ControlPacket from './packet/controlPacket'
+import Radio, { RadioPath } from './radio'
 
 const pwmHat = new pwm.Hat()
 const esc = new Esc(pwmHat, 0)
@@ -13,20 +13,17 @@ const rightAileron = new ControlSurface(pwmHat, 5, config.controlSurfaces.rightA
 const elevator = new ControlSurface(pwmHat, 8, config.controlSurfaces.elevator)
 const rudder = new ControlSurface(pwmHat, 9, config.controlSurfaces.rudder)
 const powerModule = new PowerModule()
-const radio = new Radio()
-
+const radio = new Radio(RadioPath.AIR)
 
 radio.onData((packet) => {
-  
-  if (packet.type == 'control') {
-    const controlPacket = packet as ControlPacket
+  if (packet instanceof ControlPacket) {
     radio.getMetrics()
 
-    leftAileron.setPosition(controlPacket.data.roll / 100)
-    rightAileron.setPosition(-controlPacket.data.roll / 100)
-    elevator.setPosition(controlPacket.data.pitch / 100)
-    rudder.setPosition(controlPacket.data.yaw / 100)
-  } 
+    leftAileron.setPosition(packet.data.roll / 127 - 1)
+    rightAileron.setPosition(-packet.data.roll / 127 - 1)
+    elevator.setPosition(packet.data.pitch / 127 - 1)
+    rudder.setPosition(packet.data.yaw / 127 - 1)
+  }
   // console.log(data)
   // console.log(Date.now() - data.time)
 })

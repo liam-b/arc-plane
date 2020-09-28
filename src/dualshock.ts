@@ -8,44 +8,44 @@ const devices = HID.devices()
 export interface DualshockState {
   joystick: {
     left: {
-      x: number,
-      y: number
-    },
-    right: {
-      x: number,
+      x: number
       y: number
     }
-  },
+    right: {
+      x: number
+      y: number
+    }
+  }
   trigger: {
-    left: number,
+    left: number
     right: number
-  },
+  }
   button: {
-    triangle: boolean,
-    circle: boolean,
-    cross: boolean,
-    square: boolean,
+    triangle: boolean
+    circle: boolean
+    cross: boolean
+    square: boolean
     pad: {
-      up: boolean,
-      right: boolean,
-      down: boolean,
+      up: boolean
+      right: boolean
+      down: boolean
       left: boolean
-    },
+    }
     joystick: {
-      right: boolean,
+      right: boolean
       left: boolean
-    },
-    options: boolean,
-    share: boolean,
+    }
+    options: boolean
+    share: boolean
     trigger: {
-      left: boolean,
+      left: boolean
       right: boolean
-    },
+    }
     bumper: {
-      left: boolean,
+      left: boolean
       right: boolean
-    },
-    touchpad: boolean,
+    }
+    touchpad: boolean
     playstation: boolean
   }
 }

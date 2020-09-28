@@ -11,7 +11,7 @@ export interface ControlData {
   armed: boolean
 }
 
-export abstract class Controller {
+export default abstract class Controller {
   abstract async getControlData(): Promise<ControlData>
 }
 
@@ -41,9 +41,13 @@ export class DS4Controller extends Controller {
   }
 
   private scale(input: number, inverted?: boolean): number {
-    let output = input / 255
+    // let output = input / 127 - 1
+    let output = input
+
     // return (inverted) ? -output : output
-    return Math.floor(((inverted) ? -output : output) * 100)
+    if (inverted) output *= -1
+    return Math.floor(output)
+    // return Math.floor(output * 100)
   }
 }
 
