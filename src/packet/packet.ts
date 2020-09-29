@@ -32,8 +32,8 @@ export default abstract class Packet {
   }
 
   static deserialize(buffer: Buffer): ControlPacket | PingPacket | null {
-    if (buffer.length >= PACKET_BYTES) return null
-    
+    if (buffer.length != PACKET_BYTES) return null
+
     const identifier = buffer.readUInt8()
     const timestamp = Number(buffer.readBigUInt64BE(1))
     const payload = buffer.slice(PACKET_META_BYTES, PACKET_BYTES)
