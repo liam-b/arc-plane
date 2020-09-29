@@ -1,4 +1,4 @@
-import Packet from './packet/packet'
+import Packet, { PACKET_BYTES } from './packet/packet'
 import SerialPort from 'serialport'
 import logger from './log'
 
@@ -12,7 +12,7 @@ export enum RadioPath {
 
 export default class {
   private readonly port: SerialPort
-  private readonly parser: SerialPort.parsers.Readline
+  private readonly parser: SerialPort.parsers.ByteLength
 
   private lastPacketTime: number = Date.now()
   readonly intervalHistory: number[] = new Array(METRIC_HISTORY_LENGTH).fill(0)
@@ -21,21 +21,21 @@ export default class {
 
   constructor(devicePath: RadioPath) {
     this.port = new SerialPort(devicePath, { baudRate: BAUD_RATE }, error => {
-      logger.err(error)
-      logger.err(`failed to open port at ${devicePath}`)
+      if (error) logger.err(`failed to open port at ${devicePath}:`, error.message)
+      else logger.info('radio port opened successfully')
     })
-    this.parser = this.port.pipe(new SerialPort.parsers.Readline({ delimiter: '\n' }))
+    this.parser = this.port.pipe(new SerialPort.parsers.ByteLength({ length: PACKET_BYTES }))
   }
 
   send(packet: Packet) {
-    this.port.write(Packet.serialize(packet) + '\n', error => {
-      logger.err('failed to send radio packet', error)
+    this.port.write(Packet.serialize(packet), error => {
+      if (error) logger.err('failed to send radio packet:', error.message)
     })
   }
 
   onData(callback: (data: Packet) => void) {
-    this.parser.on('data', (input: Buffer) => {
-      let packet = Packet.deserialize(input)
+    this.parser.on('data', (input: string) => {
+      let packet = Packet.deserialize(Buffer.from(input))
       this.updateMetrics(packet)
       if (packet != null) callback(packet)
       else logger.err('bad radio packet')

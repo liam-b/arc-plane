@@ -8,6 +8,7 @@ export interface ControlData {
   roll: number
   pitch: number
   yaw: number
+  flaps: number
   armed: boolean
 }
 
@@ -29,10 +30,11 @@ export class DS4Controller extends Controller {
       const dualshockState = await this.dualshock.readState()
 
       return {
-        throttle: this.scale(dualshockState?.joystick.left.y, true),
-        roll: this.scale(dualshockState?.joystick.right.x),
-        pitch: this.scale(dualshockState?.joystick.right.y),
-        yaw: this.scale(dualshockState?.joystick.left.x),
+        throttle: this.scale(dualshockState.trigger.right),
+        roll: this.scale(dualshockState.joystick.right.x),
+        pitch: this.scale(dualshockState.joystick.right.y),
+        yaw: this.scale(dualshockState.joystick.left.x),
+        flaps: this.scale(dualshockState.trigger.left),
         armed: true
       }
     } catch (error) {
@@ -45,7 +47,7 @@ export class DS4Controller extends Controller {
     let output = input
 
     // return (inverted) ? -output : output
-    if (inverted) output *= -1
+    // if (inverted) output *= -1
     return Math.floor(output)
     // return Math.floor(output * 100)
   }

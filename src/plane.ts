@@ -20,7 +20,10 @@ radio.onData((packet) => {
     radio.getMetrics()
 
     leftAileron.setPosition(packet.data.roll / 127 - 1)
-    rightAileron.setPosition(-packet.data.roll / 127 - 1)
+    rightAileron.setPosition((packet.data.roll / 127 - 1) * -1)
+    leftAileron.positionOffset = packet.data.flaps / 256
+    rightAileron.positionOffset = packet.data.flaps / 256
+
     elevator.setPosition(packet.data.pitch / 127 - 1)
     rudder.setPosition(packet.data.yaw / 127 - 1)
   }

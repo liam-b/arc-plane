@@ -1,4 +1,5 @@
-const PACKET_META_LENGTH = 9
+export const PACKET_BYTES = 32
+export const PACKET_META_BYTES = 9
 
 export enum PacketIdentifier {
   PING_PACKET_IDENTIFIER,
@@ -10,37 +11,37 @@ export default abstract class Packet {
   abstract identifier: PacketIdentifier
   abstract data: any
 
-  static serialize(packet: Packet): Buffer {
-    const data = Packet.extractDataToArray(packet.data)
-    
-    const meta = Buffer.alloc(PACKET_META_LENGTH)
+  static serialize(packet: Packet): Buffer {    
+    const meta = Buffer.alloc(PACKET_BYTES)
     meta.writeUInt8(packet.identifier)
     meta.writeBigUInt64BE(BigInt(packet.timestamp), 1)
 
-    return Buffer.concat([meta, Buffer.from(data)])
+    const data = Packet.extractDataToArray(packet.data)
+    const payload = Buffer.from(data)
+    
+    return Buffer.concat([meta, payload]).slice(0, PACKET_BYTES)
   }
 
   private static extractDataToArray(object: any, data: any[] = []): any[] {
     Object.values(object).forEach((value) => {
       if (typeof value === 'object') Packet.extractDataToArray(value, data)
-      else {
-        if (typeof value === 'boolean') data.push(value ? 1 : 0)
-        else data.push(value)
-      }
+      else data.push(value)
     })
 
     return data
   }
 
   static deserialize(buffer: Buffer): ControlPacket | PingPacket | null {
+    if (buffer.length >= PACKET_BYTES) return null
+    
     const identifier = buffer.readUInt8()
     const timestamp = Number(buffer.readBigUInt64BE(1))
-    const data = Array.from(buffer.slice(PACKET_META_LENGTH))
+    const payload = buffer.slice(PACKET_META_BYTES, PACKET_BYTES)
 
     const packet = Packet.getPacketOfType(identifier)
     if (!packet) return null
 
-    Packet.insertDataFromArray(packet.data, data)
+    Packet.insertDataFromArray(packet.data, Array.from(payload))
     packet.timestamp = timestamp
     return packet
   }
@@ -60,7 +61,7 @@ export default abstract class Packet {
     Object.entries(object).forEach(([key, value]) => {
       if (typeof value === 'object') Packet.insertDataFromArray(value, data)
       else {
-        if (typeof value === 'boolean') object[key] = !!data.pop()
+        if (typeof value === 'boolean') object[key] = !!data.shift()
         else object[key] = Number(data.shift())
       }
     })

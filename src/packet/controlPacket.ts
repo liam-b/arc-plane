@@ -8,6 +8,7 @@ export default class ControlPacket extends Packet {
     roll: 0,
     pitch: 0,
     yaw: 0,
+    flaps: 0,
     armed: false
   }
 
